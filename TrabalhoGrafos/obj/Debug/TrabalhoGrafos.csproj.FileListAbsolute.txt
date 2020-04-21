@@ -1,0 +1,6 @@
+C:\Users\leitep\source\repos\TrabalhoGrafos\TrabalhoGrafos\bin\Debug\TrabalhoGrafos.exe.config
+C:\Users\leitep\source\repos\TrabalhoGrafos\TrabalhoGrafos\bin\Debug\TrabalhoGrafos.exe
+C:\Users\leitep\source\repos\TrabalhoGrafos\TrabalhoGrafos\bin\Debug\TrabalhoGrafos.pdb
+C:\Users\leitep\source\repos\TrabalhoGrafos\TrabalhoGrafos\obj\Debug\TrabalhoGrafos.csprojAssemblyReference.cache
+C:\Users\leitep\source\repos\TrabalhoGrafos\TrabalhoGrafos\obj\Debug\TrabalhoGrafos.exe
+C:\Users\leitep\source\repos\TrabalhoGrafos\TrabalhoGrafos\obj\Debug\TrabalhoGrafos.pdb
