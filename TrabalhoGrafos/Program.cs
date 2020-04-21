@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrabalhoGrafos.Algoritmo;
 using TrabalhoGrafos.Models;
 
 namespace TrabalhoGrafos
@@ -83,7 +84,7 @@ namespace TrabalhoGrafos
 
             //nó 10
             var node_10 = AllNodes.AllsNodes.Find(x => x.NameNode.Equals("10"));
-            node_10.AddVertices(graph.EndNode, 7);
+            node_10.AddVertices(graph.EndNode, 17);
             node_10.AddVertices(AllNodes.AllsNodes.Find(x => x.NameNode.Equals("09")), 2);
             node_10.AddVertices(AllNodes.AllsNodes.Find(x => x.NameNode.Equals("11")), 2);
 
@@ -98,7 +99,8 @@ namespace TrabalhoGrafos
             node_12.AddVertices(graph.EndNode, 7);
             node_12.AddVertices(AllNodes.AllsNodes.Find(x => x.NameNode.Equals("11")), 2);
 
-            
+            Dijkstra dijkstra = new Dijkstra(graph);
+
 
         }
     }

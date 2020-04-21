@@ -15,6 +15,8 @@ namespace TrabalhoGrafos.Models
         public bool IsToGet { get; private set; }
         public List<Vertice> Vertices { get; private set; }
 
+        public Node PrevNode { get; set; }
+
         public Node(bool isToGet, string name)
         {
             nested = false;
@@ -31,7 +33,8 @@ namespace TrabalhoGrafos.Models
             {
                 to.nested = true;
                 to.AddVertices(this, cost);
-            }            
+            }
+            Vertices = Vertices.OrderBy(x => x.Cost).ToList();
         }
 
         public override string ToString()
