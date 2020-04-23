@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrabalhoGrafos.Interface;
 using TrabalhoGrafos.Models;
 
 namespace TrabalhoGrafos.Algoritmo
 {
-    public class Dijkstra
+    public class Dijkstra : IShortest
     {
         private List<Node> UnvisitedNodes;
 
@@ -28,7 +29,16 @@ namespace TrabalhoGrafos.Algoritmo
             });
             UnvisitedNodes = UnvisitedNodes.OrderBy(x => x.CalculedCost).ToList();
             CostNodes = CostNodes.OrderBy(x => x.CalculedCost).ToList();
-            ShortestWay();
+        }
+
+        public string printGraph(Node node, string resultado)
+        {
+            if (!"inicio".Equals(node.NameNode))
+            {
+                resultado += printGraph(node.PrevNode, resultado);
+            }
+            resultado += node.NameNode + " => ";
+            return resultado;
         }
 
         public void ShortestWay()
@@ -54,6 +64,7 @@ namespace TrabalhoGrafos.Algoritmo
                     this.Graph.EndNode.PrevNode = prev;
                 }
             }
+            Console.WriteLine(printGraph(this.Graph.EndNode, "") + "Dijkstra");
         }
 
         private int GetCost(Node node, Vertice vertice)

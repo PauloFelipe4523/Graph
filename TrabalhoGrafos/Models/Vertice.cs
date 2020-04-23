@@ -14,12 +14,24 @@ namespace TrabalhoGrafos.Models
 
         public Node NodeFrom { get; private set; }
 
+        public bool IsBackWay { get; private set; }
+
         public Vertice(Node from, Node to, int cost)
         {
             this.NodeTO = to;
             this.NodeFrom = from;
             this.Cost = cost;
         }
+
+        public Vertice(Node from, Node to, int cost, bool backWay)
+        {
+            this.IsBackWay = backWay;
+            this.NodeTO = to;
+            this.NodeFrom = from;
+            this.Cost = cost;
+        }
+
+        
 
         public override string ToString()
         {

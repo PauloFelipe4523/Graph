@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algoritmo\AStar.cs" />
     <Compile Include="Algoritmo\Dijkstra.cs" />
+    <Compile Include="Interface\IShortest.cs" />
     <Compile Include="Models\AllNodes.cs" />
     <Compile Include="Models\Graph.cs" />
     <Compile Include="Models\Node.cs" />
