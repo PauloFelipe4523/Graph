@@ -10,104 +10,85 @@ namespace TrabalhoGrafos.Algoritmo
 {
     public class AStar : IShortest
     {
+        // Grafo a ser processado
         private Graph graph;
 
+        //lista aberta 
         private List<Node> OpenedList;
 
+        //lista fechada
         private List<Node> ClosedList;
 
-        private List<Node> ItemsList;
-
+        //construtor recebe a estrutura de grafo para encontrar o menor caminho
         public AStar(Graph graph)
         {
             OpenedList = new List<Node>();
             ClosedList = new List<Node>();
-            ItemsList = new List<Node>();
 
             this.graph = graph;
         }
 
-        public void ShortestWay2(string[] items)
+        // metodo para encontrar o menor caminho, o algoritmo A* inicia a lista aberta com o nó inicial e aponta ele como nó atual,
+        // depois entra no loop até que o nó de destino não seja o nó atual, ele ordena a lista aberta pelo menor custo e seta no nó atual, em seguida
+        // remove da lista aberta o nó atual. Para o nó atual ele checa cada vertice recuperando seus vizinhos. se o nó vizinho não estiver na lista 
+        // aberta ele verifica se não esta na lista fechada, caso nao estiver ele calcula o custo do nó pai até chegar ao nó filho e soma a função
+        // de heuristica e adiciona o vizinho atual à lista aberta. caso o vizinho atual ja esteja na lista aberta
+        public void ShortestWay()
         {
             Node actualNode = null;
 
             OpenedList.Add(graph.StarNode);
 
-            ItemsList.Add(graph.StarNode);
-
             actualNode = graph.StarNode;
 
-            for (int i = 0; i < items.Length; i++)
+            while (!actualNode.NameNode.Equals(graph.EndNode.NameNode))
             {
-                if (i > 0)
+
+                actualNode = OpenedList.OrderBy(x => x.CalculedCost).ToList()[0];
+                ClosedList.Add(actualNode);
+                OpenedList.Remove(actualNode);
+
+
+                actualNode.Vertices.FindAll(x => x.IsBackWay == false).ForEach(x =>
                 {
-                    ClosedList.Clear();
-                    OpenedList.Clear();
-                    OpenedList.Add(actualNode);
-                    actualNode.CalculedCost = 0;
-                    actualNode.MovedCost = 0;
-                    ItemsList.Add(actualNode);
-                }
-                while (!actualNode.NameNode.Equals(items[i]))
-                {
-
-                    actualNode = OpenedList.OrderBy(x => x.CalculedCost).ToList()[0];
-                    ClosedList.Add(actualNode);
-                    OpenedList.Remove(actualNode);
-
-
-                    actualNode.Vertices.FindAll(x => x.IsBackWay == false).ForEach(x =>
+                    var neighbor = x.NodeTO;
+                    if (OpenedList.Find(y => y.NameNode.Equals(neighbor.NameNode)) == null )
                     {
-                        var neighbor = x.NodeTO;
-                        if (OpenedList.Find(y => y.NameNode.Equals(neighbor.NameNode)) == null )
+                        if (ClosedList.Find(y => y.NameNode.Equals(neighbor.NameNode)) == null)
                         {
-                            if (ClosedList.Find(y => y.NameNode.Equals(neighbor.NameNode)) == null && ItemsList.Find(y => y.NameNode.Equals(neighbor.NameNode)) == null)
-                            {
-                                neighbor.MovedCost = x.Cost;
-                                neighbor.PrevNode = actualNode;
-                                neighbor.CalculedCost = neighbor.PrevNode.MovedCost + x.Cost + CalculeH(neighbor, 0, items[i]);
-                                OpenedList.Add(neighbor);
-                            }
+                            neighbor.MovedCost = x.Cost;
+                            neighbor.PrevNode = actualNode;
+                            neighbor.CalculedCost = neighbor.PrevNode.MovedCost + x.Cost + CalculeH(neighbor, 0);
+                            OpenedList.Add(neighbor);
                         }
-                        else
-                        {
-                            int CostNodePrevToActual = actualNode.MovedCost;
-                            int CostNodePrevToNeighbor = neighbor.MovedCost;
+                    }
+                    else
+                    {
+                        int CostNodePrevToActual = actualNode.MovedCost;
+                        int CostNodePrevToNeighbor = neighbor.MovedCost;
 
-                            if ((CostNodePrevToActual + x.Cost) < CostNodePrevToNeighbor)
-                            {
-                                neighbor.MovedCost = CostNodePrevToActual + CostNodePrevToNeighbor;
-                                neighbor.PrevNode = actualNode;
-                                neighbor.CalculedCost = neighbor.MovedCost + CalculeH(neighbor, 0, items[i]);
-                            }
+                        if ((CostNodePrevToActual + x.Cost) < CostNodePrevToNeighbor)
+                        {
+                            neighbor.MovedCost = CostNodePrevToActual + CostNodePrevToNeighbor;
+                            neighbor.PrevNode = actualNode;
+                            neighbor.CalculedCost = neighbor.MovedCost + CalculeH(neighbor, 0);
                         }
-                    });
-                }
+                    }
+                });
             }
-            
-            
 
             Console.WriteLine(printGraph(graph.EndNode, "") + "AStars");      
         }
 
-        public int CalculeH(Node node, int manhatan, string fim)
+        public int CalculeH(Node node, int manhattan)
         {
 
-            if (node.NameNode.Equals(fim))
-                return 1;
-            var nodeOnlyFrontWay = node.Vertices.FindAll(x => (x.IsBackWay == false) || x.NodeTO.NameNode.Equals(fim));
+            var nodeOnlyFrontWay = node.Vertices.FindAll(x => (x.IsBackWay == false && x.Cost == 3) || x.NodeTO.NameNode.Equals("fim"));
             if (nodeOnlyFrontWay.Count > 0)
             {
-                foreach (var item in node.Vertices)
-                {
-                    manhatan += CalculeH(item.NodeTO, manhatan, fim);
-                }
+                manhattan = CalculeH(nodeOnlyFrontWay[0].NodeTO, ++manhattan);
             }
-            else
-            {
-                return 0;
-            }
-            return manhatan;
+            return manhattan;
         }
 
         public string printGraph(Node node, string resultado)
@@ -118,11 +99,6 @@ namespace TrabalhoGrafos.Algoritmo
             }
             resultado += node.NameNode + " => ";
             return resultado;
-        }
-
-        public void ShortestWay()
-        {
-            throw new NotImplementedException();
         }
     }
 }

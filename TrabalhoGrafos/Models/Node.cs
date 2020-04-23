@@ -12,7 +12,6 @@ namespace TrabalhoGrafos.Models
 
         public int CalculedCost { get; set; }
         public string NameNode { get; private set; }
-        public bool IsToGet { get; private set; }
 
         public int MovedCost { get; set; }
 
@@ -20,11 +19,10 @@ namespace TrabalhoGrafos.Models
 
         public Node PrevNode { get; set; }
 
-        public Node(bool isToGet, string name)
+        public Node(string name)
         {
             nested = false;
             this.NameNode = name;
-            this.IsToGet = IsToGet;
             Vertices = new List<Vertice>();
             AllNodes.AllsNodes.Add(this);
         }
